@@ -16,10 +16,12 @@ while i < len(word):
     guess_word += '_'
     i += 1
 
-# Initiate guessing
+# Initialise strikes and prior guesses
 strikes = 0
 MAX_STRIKES = 6
 previous_guesses = []
+
+# Initiate guessing
 while strikes < MAX_STRIKES:
     print(f"\nStrikes: {strikes}")
     print(f"Previous guesses: {previous_guesses}")
