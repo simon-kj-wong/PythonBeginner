@@ -11,10 +11,11 @@ with urllib.request.urlopen(randomword_url) as response:
 
 # Initialise the guess of user
 guess_word = ""
-i = 0
-while i < len(word):
-    guess_word += '_'
-    i += 1
+for char in word:
+    if char.isalpha():
+        guess_word += '_'
+    else:
+        guess_word += char
 
 # Initialise strikes and prior guesses
 strikes = 0
