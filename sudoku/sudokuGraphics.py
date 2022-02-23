@@ -1,4 +1,23 @@
 from graphics import GraphWin, Rectangle, Point, Line, Text
+from sudokuBoard import cross
+
+
+rows = "ABCDEFGHI"
+columns = "123456789"
+keys = cross(rows, columns)
+
+
+# Dictionary with keys A1-I9 representing coordinates (1.5,1.5)-(10.5,10.5)
+rowIndex = 0
+colIndex = 0
+boardCoord = {}
+while rowIndex < 9:
+    while colIndex < 9:
+        boardCoord[rows[rowIndex] + columns[colIndex]] = \
+            Point(rowIndex + 1.5, colIndex + 1.5)
+        colIndex += 1
+    rowIndex += 1
+    colIndex = 0
 
 
 def drawGrid():
@@ -64,6 +83,14 @@ def drawGrid():
     line.setOutline('grey')
     line.draw(win)
 
+    return win
+
+
+def setBoard(board, win):
+    print(boardCoord)
+    for key in keys:
+        number = Text(boardCoord[key], board[key])
+        number.draw(win)
     return win
 
 
