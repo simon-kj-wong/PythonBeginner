@@ -1,11 +1,12 @@
-from graphics import GraphWin, Rectangle, Point, Line
+from graphics import GraphWin, Rectangle, Point, Line, Text
 
 
 def drawGrid():
 
     # Set the window size and coordinates
     win = GraphWin(width=600, height=600)
-    win.setCoords(0, 0, 11, 11)
+    # Set bottom-left coordinate as (0,11) and top-right coordinate as (11,0)
+    win.setCoords(0, 11, 11, 0)
 
     # Draw the outer square
     square = Rectangle(Point(1, 1), Point(10, 10))
@@ -63,4 +64,11 @@ def drawGrid():
     line.setOutline('grey')
     line.draw(win)
 
-    win.getMouse()
+    return win
+
+
+def addNumber(int, point, win):
+    number = Text(point, str(int))
+    number.draw(win)
+
+    return win
