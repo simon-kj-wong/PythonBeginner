@@ -87,7 +87,6 @@ def drawGrid():
 
 
 def setBoard(board, win):
-    print(boardCoord)
     for key in keys:
         number = Text(boardCoord[key], board[key])
         number.draw(win)

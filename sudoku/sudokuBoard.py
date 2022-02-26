@@ -5,7 +5,21 @@ def cross(A, B):
 
 rows = "ABCDEFGHI"
 columns = "123456789"
-keys = cross(rows, columns)
+# squares represents all unique square coordinates
+squares = cross(rows, columns)
+# unitlist represents all rows, columns and 3x3 squares across the grid
+unitlist = ([cross(rows, c) for c in columns] +
+            [cross(r, columns) for r in rows] +
+            [cross(rs, cs) for rs in ('ABC', 'DEF', 'GHI')
+            for cs in ('123', '456', '789')])
+# units is a dictionary with keys representing each of the 81 squares and
+# values equal to the row, column and 3x3 square that the key is a part of
+units = dict((s, [u for u in unitlist if s in u]) for s in squares)
+# peers is a dictionary with keys representing each of the 81 squares and
+# values equal to all other squares that it will be compared against
+peers = dict((s, set(sum(units[s], [])) - set([s])) for s in squares)
+
+# Need function that appends all arrays of units and removes instance of s
 
 
 def stringToBoard(string):
@@ -20,9 +34,8 @@ def stringToBoard(string):
     board = {}
     while index < 81:
         if string[index] == '0':
-            board[keys[index]] = '.'
+            board[squares[index]] = '.'
         else:
-            board[keys[index]] = string[index]
+            board[squares[index]] = string[index]
         index += 1
-    print(board)
     return board
