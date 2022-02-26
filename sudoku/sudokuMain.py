@@ -5,9 +5,16 @@ from sudokuBoard import stringToBoard
 # Need to ask if importing own sudoku or randomly generate one
 def main():
     win = drawGrid()
-    boardDict = stringToBoard("123456789123456789123456789123456789123456789" +
-                              "123456789123456789123456789123456789")
-    win = setBoard(boardDict, win)
+    board = stringToBoard("123456789" +
+                          "123456789" +
+                          "123456789" +
+                          "123456789" +
+                          "123456789" +
+                          "123456789" +
+                          "123456789" +
+                          "123456789" +
+                          "123456789")
+    win = setBoard(board, win)
     print(win.getMouse())
 
 
