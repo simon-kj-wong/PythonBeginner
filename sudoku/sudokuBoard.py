@@ -5,6 +5,7 @@ def cross(A, B):
 
 rows = "ABCDEFGHI"
 columns = "123456789"
+digits = "123456789"
 
 # squares represents all unique square coordinates
 squares = cross(rows, columns)
@@ -24,20 +25,38 @@ units = dict((s, [u for u in unitlist if s in u]) for s in squares)
 peers = dict((s, set(sum(units[s], [])) - set([s])) for s in squares)
 
 
-def stringToBoard(string):
+def parseGrid(string):
     # Upon given a string, represent the board as a dictionary with keys
-    # corresponding to crossproducts between 'ABCDEFGHI' and '123456789'
-    # Rows represented as A1 A2 A3|A4 A5 A6|A7 A8 A9
-    # Columns represented vertically as A1 B1 C1|D1 E1 F1|G1 H1 I1
-
-    # Assumes that the string given is of length 9*9=81
+    # A1, A2, ..., I8, I9
+    # Values correspond to either possible values or set values
+    # Used to solve the board
 
     index = 0
-    board = {}
+    values = {}
+    assert len(string) == 81
     while index < 81:
-        if string[index] == '0':
-            board[squares[index]] = '.'
+        if string[index] in '0.':
+            values[squares[index]] = '123456789'
         else:
-            board[squares[index]] = string[index]
+            values[squares[index]] = string[index]
         index += 1
-    return board
+    return values
+
+
+def reduceBoard(values):
+    # Reduce the board according to 2 rules
+    # If a key only has one value, then remove said value
+    # from peers of the key
+    # If a key has a value that none of its peers has then
+    # assign the value
+    for s1, d1 in values.items():
+        peerList = peers[s1]
+        if len(d1) == 1:
+            print("1 value")
+            print(s1)
+            # Only one value occupies, means it is set
+            # Want to remove given value from all peers
+            print(peerList)
+            for peer in peerList:
+                values[peer] = values[peer].replace(d1, "")
+    return values
