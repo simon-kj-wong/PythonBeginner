@@ -1,9 +1,8 @@
 from sudokuGraphics import drawGrid, setBoard
-from sudokuBoard import parseGrid, reduceBoard, propagateBoard
+from sudokuBoard import parseGrid, propagateBoard
 
 
-grid = '0030206009003050010018064000081029007' \
-        '00000008006708200002609500800203009005010300'
+grid = '000000907000420180000705026100904000050000040000507009920108000034059000507000000'
 
 
 # Need to ask if importing own sudoku or randomly generate one
@@ -13,6 +12,8 @@ def main():
     # Primitive way to continually propagate board
     while values != propagateBoard(values):
         values = propagateBoard(values)
+        print(values.items())
+        print("***********")
     win = setBoard(values, win)
     print(win.getMouse())
 
