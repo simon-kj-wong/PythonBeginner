@@ -50,17 +50,30 @@ def reduceBoard(values):
     # If a key has a value that none of its peers has then
     # assign the value
     for s1, d1 in values.items():
-        peerList = peers[s1]
         if len(d1) == 1:
+            peerList = peers[s1]
             # Only one value occupies, means it is set
             # Want to remove given value from all peers
             for peer in peerList:
                 values[peer] = values[peer].replace(d1, "")
-        for d2 in d1:
-            # Checking that value contains some number that others in same
-            # unit doesn't have
-            for unit in units[s1]:
-                dplaces = [s for s in unit if d2 in values[s]]
-                if len(dplaces) == 1:
-                    values[s1] = d2
+        """else:
+            for d2 in d1:
+                print(s1 + ":" + d1 + "(" + d2 + ")")
+                # Checking that value contains some number that others in same
+                # unit doesn't have
+                for unit in units[s1]:
+                    dplaces = [s for s in unit if d2 in values[s]]
+                    if len(dplaces) == 1:
+                        values[s1] = d2"""
     return values
+
+
+def propagateBoard(values):
+    potentialValues = values.copy()
+    for s1, d1 in potentialValues.items():
+        if len(d1) == 1:
+            # Only one value exists
+            # Want to remove d1 from all other peers
+            for peer in peers[s1]:
+                potentialValues[peer] = potentialValues[peer].replace(d1, "")
+    return potentialValues

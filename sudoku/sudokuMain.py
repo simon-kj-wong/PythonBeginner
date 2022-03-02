@@ -1,5 +1,5 @@
 from sudokuGraphics import drawGrid, setBoard
-from sudokuBoard import parseGrid, reduceBoard
+from sudokuBoard import parseGrid, reduceBoard, propagateBoard
 
 
 grid = '0030206009003050010018064000081029007' \
@@ -10,9 +10,10 @@ grid = '0030206009003050010018064000081029007' \
 def main():
     win = drawGrid()
     values = parseGrid(grid)
-    values = reduceBoard(values)
+    # Primitive way to continually propagate board
+    while values != propagateBoard(values):
+        values = propagateBoard(values)
     win = setBoard(values, win)
-    values['A1'] = values['A1'].replace('1', "")
     print(win.getMouse())
 
 
