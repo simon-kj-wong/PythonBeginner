@@ -43,7 +43,10 @@ def parseGrid(string):
     return values
 
 
-def propagateBoard(values):
+# Need to implement backtesting to find solution
+# Likely include another function when all confirmed answers work correctly
+# Additional function will backtest remaining squares
+def reduceBoard(values):
     tempValues = values.copy()
     for s1, d1 in tempValues.items():
         if len(d1) == 1:
@@ -51,7 +54,23 @@ def propagateBoard(values):
             # Want to remove d1 from all other peers
             for peer in peers[s1]:
                 tempValues[peer] = tempValues[peer].replace(d1, "")
+        elif len(d1) == 0:
+            print(s1)
+            # If statement only used by searchBoard function
+            # Returns false if a square doesn't have any possible values
+            return False
         else:
+            for unit in units[s1]:
+                dplaces = [s for s in unit if d1 == values[s]]
+                if len(dplaces) == len(d1):
+                    # Remove d1 from all other squares in the same unit
+                    commonUnits = [u for u in units if set(dplaces).issubset(set(u))]
+                    print(dplaces)
+                    for unit in commonUnits:
+                        for peer in unit:
+                            if peer not in dplaces:
+                                for d2 in d1:
+                                    tempValues[peer] = tempValues[peer].replaces(d2, "")
             for d2 in d1:
                 for unit in units[s1]:
                     dplaces = [s for s in unit if d2 in values[s]]
@@ -59,4 +78,26 @@ def propagateBoard(values):
                         tempValues[s1] = d2
                         for peer in unit:
                             tempValues[peer] = tempValues[peer].replace(d1, "")
+    return tempValues
+
+
+def checkBoard(values):
+    # Checks if board is complete
+    return all(len(values[s]) == 1 for s in squares)
+
+
+def searchBoard(values):
+    # Only called if propagateBoard cannot reduce
+    # an incomplete board any further
+    for s1, d1 in values.items():
+        tempValues = values.copy()
+        if len(d1) > 1:
+            for d2 in d1:
+                # Choose a possible number for a square and see if it reduces
+                tempValues[s1] = d2
+                if reduceBoard(tempValues):
+                    if checkBoard(reduceBoard(tempValues)):
+                        # Reduces to a complete board
+                        return reduceBoard(tempValues)
+                # Need if statement that searches even further
     return tempValues
