@@ -59,7 +59,7 @@ def reduceBoard(values):
             # Returns false if a square doesn't have any possible values
             return False
         else:
-            """for unit in units[s1]:
+            for unit in units[s1]:
                 dplaces = [s for s in unit if d1 == values[s]]
                 if len(dplaces) == len(d1):
                     # Remove d1 from all other squares in the same unit
@@ -68,7 +68,7 @@ def reduceBoard(values):
                         for peer in unit:
                             if peer not in dplaces:
                                 for d2 in d1:
-                                    tempValues[peer] = tempValues[peer].replaces(d2, "")"""
+                                    tempValues[peer] = tempValues[peer].replaces(d2, "")
             for d2 in d1:
                 for unit in units[s1]:
                     dplaces = [s for s in unit if d2 in values[s]]
@@ -84,24 +84,6 @@ def checkBoard(values):
     return all(len(values[s]) == 1 for s in squares)
 
 
-def searchBoard(values):
-    # Only called if reduceBoard reduce to an incomplete board
-    print("SEARCHING BOARD")
-    print(values.items())
-    if values is False:
-        return False
-    if checkBoard(values):
-        return values
-    n, s = min((len(values[s]), s) for s in squares if len(values[s]) > 1)
-    for d in values[s]:
-        temp = values.copy()
-        temp[s] = d
-        if searchBoard(temp) is False:
-            return False
-    return values
-
-# Some infinite loop here exists
-
 def propagateBoard(values):
     while values != reduceBoard(values):
         if reduceBoard(values) is False:
@@ -112,17 +94,17 @@ def propagateBoard(values):
 
 
 def search(values):
-    while values != reduceBoard(values):
-        if reduceBoard(values) is False:
-            return False
-        else:
-            values = reduceBoard(values)
     if values is False:
         return False
     if checkBoard(values):
         return values
     n, s = min((len(values[s]), s) for s in squares if len(values[s]) > 1)
+    children = []
     for d in values[s]:
         temp = values.copy()
         temp[s] = d
-        return search(temp)
+        children.append(search(propagateBoard(temp)))
+    for child in children:
+        if child:
+            return child
+    return False
