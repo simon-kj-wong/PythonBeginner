@@ -1,4 +1,6 @@
 import random
+import re
+from minesweeperGraphics import drawGrid
 
 
 # Create a board object to represent the minesweeper game
@@ -121,16 +123,36 @@ def play(dim_size=10, num_bombs=10):
     # Step 3b: if location is not a bomb dig recusively until each square is
     #          at least next to a bomb
     # Step 4: repeat steps 2 and 3 until there are no more places to dig
+    dugMessage = False
+    outOfBoundsMessage = False
     while board.check() is False:
         print(board)
-        entry = input('Enter coordinate that wants to be dug (row, column): ')
-        r = int(entry[0])
-        c = int(entry[2])
+        win = drawGrid(board.dim_size, board.dug)
+        win.getMouse()
+
+        if dugMessage:
+            entry = input('Enter coordinates that haven\'t been dug up (row, column): ')
+        elif outOfBoundsMessage:
+            entry = input('Enter a valid coordinate (row, column): ')
+        else:
+            entry = input('Enter coordinate that wants to be dug (row, column): ')
+
+        x = re.split(',', entry)
+        r = int(x[0])
+        c = int(x[1])
+
         if (r, c) in board.dug:
-            print('Enter coordinates that haven\'t been dug up')
+            dugMessage = True
+            continue
+        elif (r < 0 or r >= board.dim_size or c < 0 or c >= board.dim_size):
+            outOfBoundsMessage = True
             continue
         elif board.dig(r, c) is False:
             return print("You dug up a bomb!!!")
+
+        dugMessage = False
+        outOfBoundsMessage = False
+        win.close()
     print("You won!!!")
 
 
