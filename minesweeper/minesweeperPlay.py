@@ -114,7 +114,7 @@ class Board:
 
 
 # play the game
-def play(dim_size=10, num_bombs=10):
+def play(dim_size=20, num_bombs=50):
     # Step 1: create the board and plant the bombs
     board = Board(dim_size, num_bombs)
 
@@ -126,10 +126,7 @@ def play(dim_size=10, num_bombs=10):
     dugMessage = False
     outOfBoundsMessage = False
     while board.check() is False:
-        print(board)
-        win = drawGrid(board.dim_size, board.dug)
-        win.getMouse()
-
+        """print(board)
         if dugMessage:
             entry = input('Enter coordinates that haven\'t been dug up (row, column): ')
         elif outOfBoundsMessage:
@@ -151,7 +148,18 @@ def play(dim_size=10, num_bombs=10):
             return print("You dug up a bomb!!!")
 
         dugMessage = False
-        outOfBoundsMessage = False
+        outOfBoundsMessage = False"""
+
+        # Breaker between command line minesweeper and UI minesweeper
+        win = drawGrid(board)
+        point = win.getMouse()
+
+        r = round(point.getY()-1.5)
+        c = round(point.getX()-1.5)
+
+        if board.dig(r, c) is False:
+            return print("You dug up a bomb!!!")
+
         win.close()
     print("You won!!!")
 
