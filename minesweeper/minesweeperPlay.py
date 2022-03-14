@@ -123,8 +123,8 @@ def play(dim_size=20, num_bombs=50):
     # Step 3b: if location is not a bomb dig recusively until each square is
     #          at least next to a bomb
     # Step 4: repeat steps 2 and 3 until there are no more places to dig
-    dugMessage = False
-    outOfBoundsMessage = False
+    """dugMessage = False
+    outOfBoundsMessage = False"""
     while board.check() is False:
         """print(board)
         if dugMessage:
